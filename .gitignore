@@ -109,7 +109,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
+secret_key.json
 #node
 node_modules/ 
 
