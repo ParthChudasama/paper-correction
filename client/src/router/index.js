@@ -1,10 +1,9 @@
 /* eslint-disable */
 import Vue from "vue";
 import VueRouter from "vue-router";
-//import Home from "../views/Home.vue";
-// import home from "../components/home.vue";
+
 import down from "../components/download_page.vue";
-// import final from "../components/final.vue";
+import test from "../components/newpage";
 import step1 from "../components/step1.vue";
 import step2 from "../components/step2.vue";
 import step3 from "../components/step3.vue";
@@ -21,13 +20,13 @@ const routes = [
     name: "download",
     component: down
   },
-  // {
-  //   path: "/final",
-  //   name: "final",
-  //   component: final
-  // },
   {
     path: "/",
+    name: "test",
+    component: test
+  },
+  {
+    path: "/home",
     name: "home",
     component: step1
   },

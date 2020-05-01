@@ -27,9 +27,9 @@ import string
 
 # Import Spacy and load POS model
 import spacy
-import en_core_web_md
+import en_core_web_sm
 print('Loading POS Tagger model')
-nlp = en_core_web_md.load()
+nlp = en_core_web_sm.load()
 
 # Necessary imports
 # Import cosine similarity evaluation metric
@@ -39,15 +39,15 @@ nltk.download('punkt')
 
 
 # Download Universal Sentence Encoder
-module_url = "https://tfhub.dev/google/universal-sentence-encoder-large/5"
+# module_url = "https://tfhub.dev/google/universal-sentence-encoder-large/5"
 
 # IF MODEL DOWNLOADED
-# model = hub.load(
-#     '/Users/parthchudasama/Projects/Automated-paper-correction/server/tmp/5')
+model = hub.load(
+    '/Users/parthchudasama/Projects/Universal model/5')
 
-model = hub.load(module_url)
+# model = hub.load(module_url)
 
-print("module %s loaded" % module_url)
+# print("module %s loaded" % module_url)
 
 # Reduce logging output.
 # logging.set_verbosity(logging.ERROR)

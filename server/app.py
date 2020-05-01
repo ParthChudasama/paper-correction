@@ -3,29 +3,23 @@ Author - Parth Chudasama
 Desc - Main flask app
 '''
 
-import io
-import os
-import re
 import zipfile
-import requests
-import sys
-import shutil
-import logging
-import eventlet
 from os.path import basename
-from pathlib import Path
-from pprint import pprint
-from flask_cors import CORS
-from google.cloud import vision
-from spellchecker import SpellChecker
-from google.cloud.vision import types
-from OCR import vision_ocr, processed_ocr
-from werkzeug.utils import secure_filename
-from preprocessing import image_preprocessing
-from flask_socketio import SocketIO, emit, send
-from flask import Flask, jsonify, request, session, render_template, send_file
-from report import *
 
+import logging
+import os
+import shutil
+from OCR import processed_ocr
+from flask import Flask, jsonify, request, render_template, send_file
+from flask_cors import CORS
+from flask_socketio import SocketIO
+from pathlib import Path
+import eventlet
+from pprint import pprint
+from preprocessing import image_preprocessing
+from report import *
+from spellchecker import SpellChecker
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -68,7 +62,7 @@ log1 = logging.getLogger('engineio')
 log1.disabled = True
 
 # setting GCP creds
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "secret_key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "VA.json"
 
 # Check and create required folders
 student_upload = os.getcwd() + '/student_files'
@@ -88,6 +82,7 @@ PATH_PAPERS = os.getcwd() + '/preprocessed'
 def index():
     return render_template("index.html")
 
+
 # Testing purpose
 @app.route('/test', methods=['GET'])
 def test():
@@ -100,12 +95,13 @@ def test():
 def spell_correction(text):
     correction = []
     spell = SpellChecker()
-    spell.word_frequency.load_text_file(misc_files+'/correction_file.txt')
+    spell.word_frequency.load_text_file(misc_files + '/correction_file.txt')
     word_list = list(text.split(" "))
     for word in word_list:
         correction.append(spell.correction(word))
     corr_text = ' '.join(correction)
     return corr_text
+
 
 # remove dirs **only testing phase
 
@@ -116,6 +112,7 @@ def delete_dir(mydir):
     except OSError as e:
         print("Error: %s - %s." % (e.filename, e.strerror))
     return None
+
 
 # get student file and save in student_files dir
 @app.route('/student-upload', methods=['POST'])
@@ -142,6 +139,7 @@ def upload_file():
             #               {'data': str(text)})
             resp.status_code = 200
         return resp
+
 
 # get master and correction file
 @app.route('/master-upload', methods=['POST'])
@@ -226,7 +224,7 @@ def correct_file():
         delete_dir(student_upload)
         pprint("Results are ready and stored in preprocessed!")
 
-        zipf = zipfile.ZipFile(PATH_PAPERS + '/'+'Student_results.zip', 'w', )
+        zipf = zipfile.ZipFile(PATH_PAPERS + '/' + 'Student_results.zip', 'w', )
         pprint('Zipping pdfs')
         for root, dirs, files in os.walk(PATH_PAPERS):
             for file in files:
@@ -243,12 +241,11 @@ def correct_file():
 
 @app.route('/download')
 def download_all():
-
-    return send_file(PATH_PAPERS + '/'+'Student_results.zip',
+    return send_file(PATH_PAPERS + '/' + 'Student_results.zip',
                      mimetype='zip',
                      attachment_filename='Student_results.zip',
                      as_attachment=True)
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=False)
+    socketio.run(app)

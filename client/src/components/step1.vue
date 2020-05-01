@@ -83,8 +83,9 @@ export default {
         let file = this.files[i];
 
         formData.append("file", file);
-      }
 
+      }
+        console.log(formData)
       /*
           Make the request to the POST /select-files URL
         */
